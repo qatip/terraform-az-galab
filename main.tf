@@ -23,6 +23,7 @@ resource "azurerm_resource_group" "rg" {
   location = var.location
   tags = {
     environment = var.env
-    managed_by  = "github-actions"
+    managed_by  = "github-actions-MAIN"
   }
 }
+
