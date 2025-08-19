@@ -74,3 +74,16 @@ jobs:
             -var-file="${ENV}.tfvars" \
             -var="subscription_id=${ARM_SUBSCRIPTION_ID}" \
             -var="env=${ENV}"
+
+      # Remove the state blob only if destroy succeeded
+      - name: Delete remote state blob
+        if: ${{ success() }}
+        run: |
+          echo "Deleting state blob: ${STATE_CONTAINER}/${STATE_KEY} in account ${STATE_STORAGE}"
+          az storage blob delete \
+            --account-name "${STATE_STORAGE}" \
+            --container-name "${STATE_CONTAINER}" \
+            --name "${STATE_KEY}" \
+            --auth-mode login \
+            --only-show-errors
+            
